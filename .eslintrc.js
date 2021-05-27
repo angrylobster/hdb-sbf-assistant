@@ -27,6 +27,7 @@ module.exports = {
         '@typescript-eslint/no-use-before-define': ['error'],
         semi: ['warn', 'always'],
         quotes: ['warn', 'single'],
+        'react/display-name': [0],
     },
     overrides: [
         {
