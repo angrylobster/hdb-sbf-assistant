@@ -5,19 +5,16 @@ import data from '../data/data.json';
 import towns from '../data/towns.json';
 import developments from '../data/developments.json';
 
-class FilterDto {
-    text: unknown;
-    value: unknown;
-
-    constructor (value: unknown) {
-        this.text = value;
-        this.value = value;
-    }
+function createFilter (value: string) {
+    return {
+        text: value,
+        value,
+    };
 }
 
 export default function Home (): ReactNode {
     const formatter = new Intl.NumberFormat('en-SG', { style: 'currency', currency: 'SGD', minimumFractionDigits: 0 });
-    const [developmentFilters] = useState(developments.sort().map(development => new FilterDto(development)));
+    const [developmentFilters] = useState(developments.sort().map(development => createFilter(development)));
     const [typeFilters] = useState(['2-room Flexi','3-room','4-room','5-room','3Gen','Executive']);
     const [flats, setFlats] = useState(data);
     const COLUMNS = [
@@ -34,7 +31,7 @@ export default function Home (): ReactNode {
             title: 'Town',
             dataIndex: 'town',
             key: 'town',
-            filters: towns.map(town => new FilterDto(town)),
+            filters: towns.map(town => createFilter(town)),
             onFilter: (value, record) => {
                 return record.town === value;
             }
@@ -43,7 +40,7 @@ export default function Home (): ReactNode {
             title: 'Type',
             dataIndex: 'room_type',
             key: 'room_type',
-            filters: typeFilters.map(value => new FilterDto(value)),
+            filters: typeFilters.map(value => createFilter(value)),
             onFilter: (value, record) => {
                 return record.room_type === value;
             }
