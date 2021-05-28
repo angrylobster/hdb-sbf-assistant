@@ -12,7 +12,9 @@ function MyApp({ Component, pageProps }: AppProps): ReactNode {
             <meta name="description" content="May 2021 SBF Assistant" />
             <link rel="icon" href="/favicon.ico" />
         </Head>
-        <Component {...pageProps} />
+        <div style={{ padding: '40px' }}>
+            <Component {...pageProps} />
+        </div>
     </>;
 }
 

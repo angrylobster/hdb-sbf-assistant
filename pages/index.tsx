@@ -12,9 +12,16 @@ function createFilter (value: string) {
     };
 }
 
+type FlatData = {
+    price: number;
+    chinese_quota: number;
+    malay_quota: number;
+    indian_and_others_quota: number;
+}
+
 export default function Home (): ReactNode {
     const formatter = new Intl.NumberFormat('en-SG', { style: 'currency', currency: 'SGD', minimumFractionDigits: 0 });
-    const [developmentFilters] = useState(developments.sort().map(development => createFilter(development)));
+    const [developmentFilters] = useState(developments);
     const [typeFilters] = useState(['2-room Flexi','3-room','4-room','5-room','3Gen','Executive']);
     const [flats, setFlats] = useState(data);
     const COLUMNS = [
@@ -38,11 +45,11 @@ export default function Home (): ReactNode {
         },
         {
             title: 'Type',
-            dataIndex: 'room_type',
-            key: 'room_type',
+            dataIndex: 'flat_type',
+            key: 'flat_type',
             filters: typeFilters.map(value => createFilter(value)),
             onFilter: (value, record) => {
-                return record.room_type === value;
+                return record.flat_type === value;
             }
         },
         {
@@ -74,28 +81,37 @@ export default function Home (): ReactNode {
             title: 'Keys Available',
             dataIndex: 'keys_available',
             key: 'keys_available',
-            render: availability => <span>{availability ? 'Yes' : 'No'}</span>
+            render: availability => <span>{availability ? 'Yes' : 'No'}</span>,
+            width: 100
         },
         {
             title: 'Chinese Quota',
             dataIndex: 'chinese_quota',
             key: 'chinese_quota',
+            width: 100,
+            sorter: (firstValue: FlatData, secondValue: FlatData) => firstValue.chinese_quota - secondValue.chinese_quota,
         },
         {
             title: 'Malay Quota',
             dataIndex: 'malay_quota',
             key: 'malay_quota',
+            width: 100,
+            sorter: (firstValue: FlatData, secondValue: FlatData) => firstValue.malay_quota - secondValue.malay_quota,
         },
         {
             title: 'Indian and Others Quota',
             dataIndex: 'indian_and_others_quota',
             key: 'indian_and_others_quota',
+            width: 150,
+            sorter: (firstValue: FlatData, secondValue: FlatData) => firstValue.indian_and_others_quota - secondValue.indian_and_others_quota,
         },
         {
             title: 'Price',
             dataIndex: 'price',
             key: 'price',
-            render: price => <span>{formatter.format(price)}</span>
+            render: price => <span>{formatter.format(price)}</span>,
+            sorter: (firstValue: FlatData, secondValue: FlatData) => firstValue.price - secondValue.price,
+
         },
     ];
 
